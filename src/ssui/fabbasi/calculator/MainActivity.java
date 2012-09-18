@@ -3,15 +3,21 @@ package ssui.fabbasi.calculator;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 
 	//VARIABLES
+	
+	//Global
+	boolean operated;
+	Context context;
 	
 	//Integer buttons
 	Button doublezero;
@@ -26,6 +32,8 @@ public class MainActivity extends Activity implements OnClickListener {
 	Button eight;
 	Button nine;
 	Button clear;
+	Button mult;
+	Button equals;
 	TextView output;
 	
     @Override
@@ -37,6 +45,8 @@ public class MainActivity extends Activity implements OnClickListener {
     }
     //This method attaches each button on the screen to a Button object.
     private void initialize() {
+    	operated = false;
+    	context = getApplicationContext();
     	doublezero = (Button) findViewById(R.id.dubZeroButton);
 		zero = (Button) findViewById(R.id.zeroButton);
 		one = (Button) findViewById(R.id.oneButton);
@@ -48,7 +58,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		seven = (Button) findViewById(R.id.sevenButton);
 		eight = (Button) findViewById(R.id.eightButton);
 		nine = (Button) findViewById(R.id.nineButton);
+		mult = (Button) findViewById(R.id.multButton);
 		clear = (Button) findViewById(R.id.clearButton);
+		equals = (Button) findViewById(R.id.equalsButton);
 		output = (TextView) findViewById(R.id.output);
 		
 		doublezero.setOnClickListener(this);
@@ -62,6 +74,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		seven.setOnClickListener(this);
 		eight.setOnClickListener(this);
 		nine.setOnClickListener(this);
+		mult.setOnClickListener(this);
+		equals.setOnClickListener(this);
 		clear.setOnClickListener(this);
 		
 	}
@@ -103,14 +117,61 @@ public class MainActivity extends Activity implements OnClickListener {
 		case R.id.nineButton:
 			output.append("9");
 			break;
+			
+		//OPERATORS
+		//If an operator has already been added to the output textview, then no additional operators will be added.
+		case R.id.divButton:
+			if(!operated)
+				output.append("/");
+				operated = true;
+			break;
+		case R.id.plusButton:
+			if(!operated)
+				output.append("+");
+				operated = true;
+			break;
+		case R.id.multButton:
+			if(!operated)
+				output.append("*");
+				operated = true;
+			break;
+		case R.id.minusButton:
+			if(!operated)
+				output.append("-");
+				operated = true;
+			break;
+			
+		//MISC
+		//Remove all text from the output when clearButton is called.
 		case R.id.clearButton:
 			output.setText("");
+			operated = false;
+			break;
+		//Remove all text from the output when clearButton is called.
+		case R.id.equalsButton:
+			CharSequence c = output.getText();
+			calculate(c);
 			break;
 
 		}
 		
 	}
 
+	private void calculate(CharSequence c) {
+		int size = c.length();
+		int i = 0;
+		int duration = Toast.LENGTH_LONG;
+		if(Character.getNumericValue(c.charAt(0)) < 48 || Character.getNumericValue(c.charAt(0)) > 57){
+			Toast.makeText(context, "Please enter correct information", duration).show();	
+		}
+		Toast.makeText(context, "Please enter correct information", duration).show();
+		while(i < size){
+			
+			
+			i++;
+		}
+		
+	}
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_main, menu);
